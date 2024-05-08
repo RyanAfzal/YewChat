@@ -166,21 +166,18 @@ impl Component for Chat {
                     <div class="w-full h-14 border-b-2 border-gray-300"><div class="text-xl p-3">{"💬 Chat!"}</div></div>
                     <div class="w-full grow overflow-auto border-b-2 border-gray-300">
                         {
-                            self.messages.iter().map(|m| {
+                            self.messages.iter().enumerate().map(|(index, m)| {
                                 let user = self.users.iter().find(|u| u.name == m.from).unwrap();
+                                let animation_delay = format!("{}s", index as f32 * 0.1);
                                 html!{
-                                    <div class="flex items-end w-3/6 bg-gray-100 m-8 rounded-tl-lg rounded-tr-lg rounded-br-lg ">
+                                    <div class="flex items-end w-3/6 bg-gray-100 m-8 rounded-tl-lg rounded-tr-lg rounded-br-lg chat-bubble" style={format!("animation-delay: {}", animation_delay)}>
                                         <img class="w-8 h-8 rounded-full m-3" src={user.avatar.clone()} alt="avatar"/>
                                         <div class="p-3">
                                             <div class="text-sm">
                                                 {m.from.clone()}
                                             </div>
                                             <div class="text-xs text-gray-500">
-                                                if m.message.ends_with(".gif") {
-                                                    <img class="mt-3" src={m.message.clone()}/>
-                                                } else {
-                                                    {m.message.clone()}
-                                                }
+                                                {m.message.clone()}
                                             </div>
                                         </div>
                                     </div>
